@@ -1,0 +1,200 @@
+
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>💖 Cantinho da Talita 💖</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+      background-attachment: fixed;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      color: #333;
+    }
+    h1 {
+      margin: 20px;
+      font-size: 2em;
+      color: #d63384;
+      text-shadow: 1px 1px 2px #fff;
+    }
+    .card {
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      padding: 20px;
+      margin: 15px;
+      width: 90%;
+      max-width: 500px;
+      text-align: center;
+      animation: fadeIn 1s ease;
+    }
+    .card h2 {
+      margin-bottom: 10px;
+    }
+    button {
+      background: #ff85a2;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 1em;
+      margin-top: 10px;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #ff5c8d;
+      transform: scale(1.05);
+    }
+    input, textarea {
+      width: 90%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      margin: 5px 0;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    ul li {
+      background: #ffe6ec;
+      margin: 5px;
+      padding: 8px;
+      border-radius: 10px;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <h1>💖 Cantinho da Talita 💖</h1>
+
+  <div class="card">
+    <h2>😴 Hoje eu acordo me sentindo...</h2>
+    <select id="mood">
+      <option value="feliz">😊 Feliz</option>
+      <option value="triste">😢 Triste</option>
+      <option value="irritada">😠 Irritada</option>
+      <option value="cansada">🥱 Cansada</option>
+    </select>
+    <p id="thought">🌸 Escolha seu humor para ver uma mensagem fofinha!</p>
+  </div>
+
+  <div class="card">
+    <h2>🎶 Música para você</h2>
+    <p id="song">Escolha seu humor acima 🎧</p>
+    <button onclick="nextSong()">Trocar música 🎵</button>
+  </div>
+
+  <div class="card">
+    <h2>📖 Mini Conto</h2>
+    <p id="story">Clique abaixo para gerar uma historinha curta ✨</p>
+    <button onclick="generateStory()">Gerar História</button>
+  </div>
+
+  <div class="card">
+    <h2>📅 Diário de Gratidão</h2>
+    <textarea id="gratitudeInput" placeholder="Escreva algo bom de hoje..."></textarea>
+    <button onclick="addGratitude()">Salvar</button>
+    <ul id="gratitudeList"></ul>
+  </div>
+
+  <div class="card">
+    <h2>🌟 Motivação do Dia</h2>
+    <p id="motivation">Clique abaixo para inspiração 💪</p>
+    <button onclick="generateMotivation()">Nova Motivação</button>
+  </div>
+
+  <script>
+    const thoughts = {
+      feliz: ["🌞 Hoje vai ser incrível!", "🌸 Você ilumina o mundo!", "💖 Continue espalhando amor!"],
+      triste: ["💙 Respira fundo, tudo passa.", "🌈 Depois da chuva vem o arco-íris.", "🤗 Você não está sozinha."],
+      irritada: ["🧘‍♀️ Respire e relaxe.", "💌 Não se esqueça: você é maravilhosa!", "🌊 Deixe a raiva ir embora."],
+      cansada: ["😴 Descanse, você merece.", "☕ Uma pausa pode ajudar!", "🌙 A calma traz força."]
+    };
+
+    const songs = {
+      feliz: [
+        {title:"Anavitória - Trevo", yt:"https://www.youtube.com/watch?v=uoS1v2mqRzE", sp:"https://open.spotify.com/track/5J1Qv5dpVhCQa5Roj2fG8S"},
+        {title:"Melim - Meu Abrigo", yt:"https://www.youtube.com/watch?v=hmncuUicnCk", sp:"https://open.spotify.com/track/1pKYYY0dkg23sQQXi0Q5zN"}
+      ],
+      triste: [
+        {title:"Maria Gadú - Shimbalaiê", yt:"https://www.youtube.com/watch?v=dUQ5T6xVuqw", sp:"https://open.spotify.com/track/5Gk7CRsQyiXlj2d5xwbnHV"}
+      ],
+      irritada: [
+        {title:"Pabllo Vittar - Amor de Que", yt:"https://www.youtube.com/watch?v=fdixQDPA2h0", sp:"https://open.spotify.com/track/1gnjcEQQeQkxXNaKZi0W2m"}
+      ],
+      cansada: [
+        {title:"Chico Buarque - A Banda", yt:"https://www.youtube.com/watch?v=4B1f3Y5bG9A", sp:"https://open.spotify.com/track/3sJX4k2guUGz8gDuwZQzQy"}
+      ]
+    };
+
+    const stories = [
+      "🐻 Uma ursinha chamada Lita encontrou um coração mágico que brilhava sempre que ela sorria.",
+      "🌙 No céu estrelado, uma fadinha escrevia mensagens de amor para Talita nas nuvens.",
+      "🌸 Uma florzinha cor-de-rosa dançava ao vento e cochichava: 'Você é especial!'"
+    ];
+
+    const motivations = [
+      "💪 Você é mais forte do que pensa!",
+      "🌈 Cada dia é uma nova chance de ser feliz.",
+      "🚀 Continue sonhando alto, você pode tudo!"
+    ];
+
+    let currentSongs = [];
+    let songIndex = 0;
+
+    document.getElementById("mood").addEventListener("change", function() {
+      const mood = this.value;
+      const t = thoughts[mood];
+      document.getElementById("thought").innerText = t[Math.floor(Math.random()*t.length)];
+      currentSongs = [...songs[mood]];
+      songIndex = 0;
+      showSong();
+    });
+
+    function showSong() {
+      if(currentSongs.length > 0) {
+        const s = currentSongs[songIndex % currentSongs.length];
+        document.getElementById("song").innerHTML = `🎵 ${s.title}<br> <a href="${s.yt}" target="_blank">▶️ YouTube</a> | <a href="${s.sp}" target="_blank">🎧 Spotify</a>`;
+      }
+    }
+
+    function nextSong() {
+      if(currentSongs.length > 0) {
+        songIndex = (songIndex+1) % currentSongs.length;
+        showSong();
+      }
+    }
+
+    function generateStory() {
+      document.getElementById("story").innerText = stories[Math.floor(Math.random()*stories.length)];
+    }
+
+    function generateMotivation() {
+      document.getElementById("motivation").innerText = motivations[Math.floor(Math.random()*motivations.length)];
+    }
+
+    function addGratitude() {
+      const input = document.getElementById("gratitudeInput");
+      if(input.value.trim() !== "") {
+        const li = document.createElement("li");
+        li.textContent = input.value;
+        document.getElementById("gratitudeList").appendChild(li);
+        input.value = "";
+      }
+    }
+  </script>
+</body>
+</html>
